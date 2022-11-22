@@ -113,6 +113,7 @@ class SmartAccount extends EventEmitter {
   // Note: Could remove WalletProvider later on
   constructor(walletProvider: Web3Provider, config?: Partial<SmartAccountConfig>) {
     super()
+    console.log('Smart Account constructor hit')
     this.#smartAccountConfig = { ...DefaultSmartAccountConfig }
     console.log('stage 1 : default config')
     console.log(this.#smartAccountConfig)
