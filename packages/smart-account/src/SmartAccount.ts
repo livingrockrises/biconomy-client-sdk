@@ -50,6 +50,7 @@ import TransactionManager, {
 } from '@biconomy-sdk-dev/transactions'
 import EventEmitter from 'events'
 import { TransactionResponse } from '@ethersproject/providers'
+import { MetaMaskInpageProvider } from '@metamask/providers'
 import { SmartAccountSigner } from './signers/SmartAccountSigner'
 
 // AA
@@ -74,7 +75,7 @@ class SmartAccount extends EventEmitter {
   // Chain configurations fetched from backend
   chainConfig!: ChainConfig[]
 
-  provider!: Web3Provider
+  provider!: MetaMaskInpageProvider
 
   // 4337Provider
   aaProvider!: { [chainId: number]: ERC4337EthersProvider }
@@ -111,7 +112,7 @@ class SmartAccount extends EventEmitter {
    * If you wish to use your own backend server and relayer service, pass the URLs here
    */
   // Note: Could remove WalletProvider later on
-  constructor(walletProvider: Web3Provider, config?: Partial<SmartAccountConfig>) {
+  constructor(walletProvider: MetaMaskInpageProvider, config?: Partial<SmartAccountConfig>) {
     super()
     this.#smartAccountConfig = { ...DefaultSmartAccountConfig }
     console.log('stage 1 : default config')
@@ -259,7 +260,13 @@ class SmartAccount extends EventEmitter {
   async init() {
     this.setActiveChain(this.#smartAccountConfig.activeNetworkId)
 
-    this.owner = await this.signer.getAddress()
+    // this.owner = await this.signer.getAddress()
+
+    const accounts: any = await this.provider.request({method: 'eth_requestAccounts'})
+    console.log('accounts ', accounts)
+    const owner = accounts[0]
+    this.owner = owner
+    console.log('owner is,..', owner)
 
     const chainConfig = (await this.nodeClient.getAllSupportedChains()).data
 

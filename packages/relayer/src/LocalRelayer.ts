@@ -20,7 +20,7 @@ export class LocalRelayer implements IRelayer {
   constructor(signer: AbstractSigner) {
     if (!AbstractSigner.isSigner(signer)) throw new Error('Signer must have a provider')
     this.signer = signer
-    if (!this.signer.provider) throw new Error('Signer must have a provider')
+    // if (!this.signer.provider) throw new Error('Signer must have a provider')
   }
 
   // Defines a type DeployWallet that takes config, context for SCW in this context
